@@ -107,6 +107,7 @@ jobs:
          needs.detect-changes.outputs.dependencies == 'true')))
     runs-on: windows-2022
     steps:
+
       - uses: actions/cache@v4
         id: cache
         with:
@@ -117,6 +118,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-sdks-sdk7.0sp1-sdk7.1-
             ${{ runner.os }}-sdks-
+
       - name: Download Windows SDK 7.0 SP1 and 7.1
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
@@ -127,9 +129,7 @@ jobs:
           7z x ./sdk71.iso -y -o"./SDK7.1"
           echo "SDKs downloaded and extracted."
 
-
-
-   build-clang:
+  build-clang:
     needs: [get-version, detect-changes, setup]
     if: |
       always() && needs.setup.result == 'success' &&
@@ -144,6 +144,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - uses: actions/cache@v4
         id: cache
         with:
@@ -154,7 +155,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-sdks-sdk7.0sp1-sdk7.1-
             ${{ runner.os }}-sdks-
-
+      
       - name: Install SDKs
         run: |
           echo "Installing SDKs..."
